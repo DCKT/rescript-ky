@@ -21,15 +21,13 @@
   "devDependencies": {
     "@rescript/core": "^1.0.0",
     "ky": "1.2.0",
-    "nock": "13.5.1",
     "rescript": ">=11.0.0",
     "rescript-bun": "^0.4.1"
   },
   "scripts": {
     "build": "rescript build",
     "dev": "rescript build -w",
-    "clean": "rescript clean",
-    "test": "rescript build && retest tests/**/*.mjs"
+    "clean": "rescript clean"
   },
   "files": [
     "src/*",
