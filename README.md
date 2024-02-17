@@ -95,7 +95,7 @@ type data = {anything: string}
 
 let fetchSomething = async () => {
   try {
-    let response: data = await (instance->Ky.Instance.get("test")).json()
+    let response: data = await (extendedInstance->Ky.Instance.get("test")).json()
     // handle response data
   } catch {
     | JsError(err) => {
