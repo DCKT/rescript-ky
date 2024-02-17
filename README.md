@@ -1,6 +1,6 @@
 # rescript-ky
 
-ReScript bindings for [ky HTTP client](https://github.com/sindresorhus/ky)
+ReScript bindings for [ky HTTP client](https://github.com/sindresorhus/ky) (targeted version : `~1.2.0`)
 
 ## Setup
 

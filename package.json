@@ -34,5 +34,8 @@
   "files": [
     "src/*",
     "rescript.json"
-  ]
+  ],
+  "engines": {
+    "node": ">=18"
+  }
 }
