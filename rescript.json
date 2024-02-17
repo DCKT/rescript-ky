@@ -1,0 +1,6 @@
+{
+  "name": "@dck/rescript-bindings-template",
+  "uncurried": true,
+  "namespace": false,
+  "sources": ["src/js"]
+}

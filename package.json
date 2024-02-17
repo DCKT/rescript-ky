@@ -1,0 +1,30 @@
+{
+  "name": "@dck/rescript-bindings-template",
+  "version": "0.0.0",
+  "description": "",
+  "keywords": [
+    "rescript",
+    "bindings"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "Thomas Deconinck",
+    "email": "tqs.deconinck@gmail.com",
+    "url": "https://github.com/DCKT"
+  },
+  "peerDependencies": {
+    "rescript": ">=11.0.0"
+  },
+  "devDependencies": {
+    "rescript": ">=11.0.0"
+  },
+  "scripts": {
+    "build": "rescript build",
+    "watch": "rescript build -w",
+    "clean": "rescript clean"
+  },
+  "files": [
+    "src/*",
+    "rescript.json"
+  ]
+}
