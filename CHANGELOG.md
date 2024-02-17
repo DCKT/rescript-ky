@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/DCKT/rescript-ky/compare/v1.2.0...v1.2.1) (2024-02-17)
+
+
+### Bug Fixes
+
+* fix rescript name config ([9220064](https://github.com/DCKT/rescript-ky/commit/92200643c3854ea684403270ce8da9cb257c9089))
+
 # [1.2.0](https://github.com/DCKT/rescript-ky/compare/v1.1.0...v1.2.0) (2024-02-17)
 
 
