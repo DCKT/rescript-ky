@@ -9,6 +9,11 @@ let wait = ms => {
 
 let retry = ref(0)
 
+@module("bun:test")
+external mock: (unit => unit) => unit => unit = "mock"
+
+let afterResponseMock = mock(() => ())
+
 @val
 external jsonResponse: (
   'a,
@@ -20,6 +25,10 @@ let server = Bun.serve({
     let url = URL.make(request->Globals.Request.url)
     switch url->Globals.URL.pathname {
     | "/" => jsonResponse({"test": 1})
+    | "/afterResponse" => {
+        afterResponseMock()
+        jsonResponse({"test": 1})
+      }
     | "/extend/test" => jsonResponse({"test": 1})
     | "/method" => jsonResponse({"method": request->Globals.Request.method})
     | "/timeout" => {
@@ -139,5 +148,25 @@ describe("Instance", () => {
     let response = await (extendedInstance->Ky.Instance.get("test")).json()
 
     expect(response["test"])->Expect.toBe(1)
+  })
+})
+
+describe("Hooks", () => {
+  let instance = Ky.Instance.create({
+    prefixUrl: mockBasePath,
+    hooks: {
+      afterResponse: [
+        (_request, _responseOptions, _response) => {
+          Ky.Async(Ky.get("afterResponse", ~options={prefixUrl: mockBasePath}).json())
+        },
+      ],
+    },
+  })
+
+  testAsync("Async", async () => {
+    let response = await (instance->Ky.Instance.get("")).json()
+
+    expect(response["test"])->Expect.toBe(1)
+    expect((afterResponseMock->Obj.magic: string))->Expect.toHaveBeenCalled
   })
 })
