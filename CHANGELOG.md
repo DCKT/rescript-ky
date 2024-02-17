@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/DCKT/rescript-ky/compare/v1.1.0...v1.2.0) (2024-02-17)
+
+
+### Features
+
+* add afterResponse hook + tests ([591aac7](https://github.com/DCKT/rescript-ky/commit/591aac740ad3a8129486b97c8d95acaab093a2d4))
+
 # [1.1.0](https://github.com/DCKT/rescript-ky/compare/v1.0.0...v1.1.0) (2024-02-17)
 
 
