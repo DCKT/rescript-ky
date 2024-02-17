@@ -19,3 +19,5 @@ test/bundle/*.js
 test/bundle/*.js.gz
 promise-*
 _release
+
+*.mjs

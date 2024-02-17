@@ -2,5 +2,22 @@
   "name": "@dck/rescript-bindings-template",
   "uncurried": true,
   "namespace": false,
-  "sources": ["src/js"]
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": true
+    },
+    {
+      "dir": "tests",
+      "type": "dev",
+      "subdirs": true
+    }
+  ],
+  "suffix": ".mjs",
+  "package-specs": [
+    {
+      "module": "es6",
+      "in-source": true
+    }
+  ]
 }
