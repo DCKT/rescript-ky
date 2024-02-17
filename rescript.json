@@ -1,5 +1,5 @@
 {
-  "name": "@dck/rescript-bindings-template",
+  "name": "@dck/rescript-ky",
   "uncurried": true,
   "namespace": false,
   "sources": [
