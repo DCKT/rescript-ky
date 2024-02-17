@@ -1,6 +1,6 @@
 # rescript-ky
 
-ReScript bindings for [ky HTTP client]([url](https://github.com/sindresorhus/ky))
+ReScript bindings for [ky HTTP client](https://github.com/sindresorhus/ky)
 
 ## Setup
 
@@ -18,11 +18,13 @@ npm install @dck/rescript-ky
 
 ```json
 {
-  "bsc-flags": ["@dck/rescript-ky"]
+  "bsc-dependencies": ["@dck/rescript-ky"]
 }
 ```
 
 ## Usage
+
+The functions can be accessed through `Ky` module.
 
 ```rescript
 type data = {anything: string}
