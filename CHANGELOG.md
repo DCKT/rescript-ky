@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/DCKT/rescript-ky/compare/v1.0.0...v1.1.0) (2024-02-17)
+
+
+### Features
+
+* add HTTP shortcut methods & update tests ([cdbb31c](https://github.com/DCKT/rescript-ky/commit/cdbb31c0c968c5402a6fcdc47e49d6af11856350))
+
 # 1.0.0 (2024-02-17)
 
 
