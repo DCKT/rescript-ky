@@ -19,9 +19,11 @@
     "ky": "~1.2.0"
   },
   "devDependencies": {
+    "@rescript/core": "^1.0.0",
     "ky": "1.2.0",
     "nock": "13.5.1",
-    "rescript": ">=11.0.0"
+    "rescript": ">=11.0.0",
+    "rescript-bun": "^0.4.1"
   },
   "scripts": {
     "build": "rescript build",
