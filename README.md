@@ -28,6 +28,9 @@ The functions can be accessed through `Ky` module.
 
 ```rescript
 type data = {anything: string}
+type errorPayload = {
+  code: string
+}
 
 let fetchSomething = async () => {
   try {
@@ -35,8 +38,13 @@ let fetchSomething = async () => {
     // handle response data
   } catch {
     | JsError(err) => {
-      // handle err
-      Js.log(err)
+      let errorResponse = (err->Ky.unkownToError).response->Option.getExn
+      let errorData: errorPayload = await errorResponse.json()
+
+      switch (errorData.code) {
+        | "CODE_1" => () // do something
+        | _ => ()
+      }
     }
   }
 }
