@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/DCKT/rescript-ky/compare/v1.2.1...v1.3.0) (2024-05-07)
+
+
+### Features
+
+* add instance('url', {...options}) function binding ([fc140e6](https://github.com/DCKT/rescript-ky/commit/fc140e6ee6e506720403fdf6310d47c84c5f029e))
+
 ## [1.2.1](https://github.com/DCKT/rescript-ky/compare/v1.2.0...v1.2.1) (2024-02-17)
 
 
