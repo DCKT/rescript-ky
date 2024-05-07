@@ -2,28 +2,33 @@ type request
 type response<'data> = {json: unit => promise<'data>, status: int, url: string, ok: bool}
 type error<'data> = {response: option<response<'data>>, request: option<request>, name: string}
 
-type httpMethod =
-  | GET
-  | POST
-  | PUT
-  | HEAD
-  | DELETE
-  | PATCH
+module HttpMethod = {
+  type t =
+    | GET
+    | POST
+    | PUT
+    | HEAD
+    | DELETE
+    | PATCH
+}
 
-type rec retryOptions = {
+module RetryMethod = {
+  type t =
+    | GET
+    | PUT
+    | HEAD
+    | DELETE
+    | OPTIONS
+    | TRACE
+}
+
+type retryOptions = {
   limit?: int,
-  methods?: array<retryMethod>,
+  methods?: array<RetryMethod.t>,
   statusCodes?: array<int>,
   backoffLimit?: int,
   delay?: int => float,
 }
-and retryMethod =
-  | GET
-  | PUT
-  | HEAD
-  | DELETE
-  | OPTIONS
-  | TRACE
 
 type retryCallbackParams = {
   request: request,
@@ -74,7 +79,7 @@ module Headers = {
 
 type requestOptions<'json, 'searchParams, 'errorData, 'responseData> = {
   prefixUrl?: string,
-  method?: httpMethod,
+  method?: HttpMethod.t,
   json?: 'json,
   searchParams?: 'searchParams,
   retry?: retry,
@@ -124,60 +129,53 @@ external delete: (
 ) => response<'data> = "delete"
 
 module Instance = {
-  type t<'json, 'searchParams, 'errorData, 'responseData, 'data> = (
-    string,
-    requestOptions<'json, 'searchParams, 'errorData, 'responseData>,
-  ) => response<'data>
+  type t
 
   @module("ky") @scope("default")
-  external create: requestOptions<'json, 'searchParams, 'errorData, 'responseData> => t<
-    'json,
-    'searchParams,
-    'errorData,
-    'responseData,
-    'data,
-  > = "create"
+  external create: requestOptions<'json, 'searchParams, 'errorData, 'responseData> => t = "create"
+
+  // let fetch = (instance: t, ~url: string, ~requestOptions) => {
+  //   instance(url, requestOptions)
+  // }
 
   @send
   external get: (
-    t<'json, 'searchParams, 'errorData, 'responseData, 'data>,
+    t,
     string,
     ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
   ) => response<'data> = "get"
   @send
   external post: (
-    t<'json, 'searchParams, 'errorData, 'responseData, 'data>,
+    t,
     string,
     ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
   ) => response<'data> = "post"
   @send
   external put: (
-    t<'json, 'searchParams, 'errorData, 'responseData, 'data>,
+    t,
     string,
     ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
   ) => response<'data> = "put"
   @send
   external patch: (
-    t<'json, 'searchParams, 'errorData, 'responseData, 'data>,
+    t,
     string,
     ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
   ) => response<'data> = "patch"
   @send
   external head: (
-    t<'json, 'searchParams, 'errorData, 'responseData, 'data>,
+    t,
     string,
     ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
   ) => response<'data> = "head"
   @send
   external delete: (
-    t<'json, 'searchParams, 'errorData, 'responseData, 'data>,
+    t,
     string,
     requestOptions<'json, 'searchParams, 'errorData, 'responseData>,
   ) => response<'data> = "delete"
 
   @send
-  external extend: (
-    t<'json, 'searchParams, 'errorData, 'responseData, 'data>,
-    requestOptions<'json, 'searchParams, 'errorData, 'responseData>,
-  ) => t<'json, 'searchParams, 'errorData, 'responseData, 'data> = "extend"
+  external extend: (t, requestOptions<'json, 'searchParams, 'errorData, 'responseData>) => t =
+    "extend"
 }
