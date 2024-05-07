@@ -45,6 +45,7 @@ let server = Bun.serve({
         let data = await request->Globals.Request.json
         jsonResponse(data)
       }
+    | "/error-code" => jsonResponse({"code": "ERROR_CODE"}, ~options={status: 400})
     | "/retry" =>
       if retry.contents === 0 {
         retry := retry.contents + 1
@@ -197,5 +198,21 @@ describe("Hooks", () => {
 
     expect(response["test"])->Expect.toBe(1)
     expect((afterResponseMock->Obj.magic: string))->Expect.toHaveBeenCalled
+  })
+})
+
+type errorPayload = {code: string}
+describe("Error handling", () => {
+  testAsync("Get code error from the payload", async () => {
+    try {
+      let _ = await Ky.get("error-code", ~options={prefixUrl: mockBasePath}).json()
+    } catch {
+    | JsError(err) => {
+        let errorResponse = (err->Ky.unkownToError).response->Option.getExn
+        let errorData: errorPayload = await errorResponse.json()
+
+        expect(errorData.code)->Expect.toBe("ERROR_CODE")
+      }
+    }
   })
 })

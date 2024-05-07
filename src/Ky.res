@@ -179,3 +179,5 @@ module Instance = {
   external extend: (t, requestOptions<'json, 'searchParams, 'errorData, 'responseData>) => t =
     "extend"
 }
+
+external unkownToError: unknown => error<'data> = "%identity"
