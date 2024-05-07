@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/DCKT/rescript-ky/compare/v1.3.0...v1.3.1) (2024-05-07)
+
+
+### Bug Fixes
+
+* revert instance function and move httpMethod / retryMethod to module (avoid invalid inference) ([0e45d38](https://github.com/DCKT/rescript-ky/commit/0e45d3899141895babe9f0c137812b3606fe3e67))
+
 # [1.3.0](https://github.com/DCKT/rescript-ky/compare/v1.2.1...v1.3.0) (2024-05-07)
 
 
