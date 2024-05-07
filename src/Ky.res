@@ -10,21 +10,20 @@ type httpMethod =
   | DELETE
   | PATCH
 
-type retryMethod =
-  | GET
-  | PUT
-  | HEAD
-  | DELETE
-  | OPTIONS
-  | TRACE
-
-type retryOptions = {
+type rec retryOptions = {
   limit?: int,
   methods?: array<retryMethod>,
   statusCodes?: array<int>,
   backoffLimit?: int,
   delay?: int => float,
 }
+and retryMethod =
+  | GET
+  | PUT
+  | HEAD
+  | DELETE
+  | OPTIONS
+  | TRACE
 
 type retryCallbackParams = {
   request: request,
@@ -125,49 +124,60 @@ external delete: (
 ) => response<'data> = "delete"
 
 module Instance = {
-  type t
+  type t<'json, 'searchParams, 'errorData, 'responseData, 'data> = (
+    string,
+    requestOptions<'json, 'searchParams, 'errorData, 'responseData>,
+  ) => response<'data>
 
   @module("ky") @scope("default")
-  external create: requestOptions<'json, 'searchParams, 'errorData, 'responseData> => t = "create"
+  external create: requestOptions<'json, 'searchParams, 'errorData, 'responseData> => t<
+    'json,
+    'searchParams,
+    'errorData,
+    'responseData,
+    'data,
+  > = "create"
 
   @send
   external get: (
-    t,
+    t<'json, 'searchParams, 'errorData, 'responseData, 'data>,
     string,
     ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
   ) => response<'data> = "get"
   @send
   external post: (
-    t,
+    t<'json, 'searchParams, 'errorData, 'responseData, 'data>,
     string,
     ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
   ) => response<'data> = "post"
   @send
   external put: (
-    t,
+    t<'json, 'searchParams, 'errorData, 'responseData, 'data>,
     string,
     ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
   ) => response<'data> = "put"
   @send
   external patch: (
-    t,
+    t<'json, 'searchParams, 'errorData, 'responseData, 'data>,
     string,
     ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
   ) => response<'data> = "patch"
   @send
   external head: (
-    t,
+    t<'json, 'searchParams, 'errorData, 'responseData, 'data>,
     string,
     ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
   ) => response<'data> = "head"
   @send
   external delete: (
-    t,
+    t<'json, 'searchParams, 'errorData, 'responseData, 'data>,
     string,
     requestOptions<'json, 'searchParams, 'errorData, 'responseData>,
   ) => response<'data> = "delete"
 
   @send
-  external extend: (t, requestOptions<'json, 'searchParams, 'errorData, 'responseData>) => t =
-    "extend"
+  external extend: (
+    t<'json, 'searchParams, 'errorData, 'responseData, 'data>,
+    requestOptions<'json, 'searchParams, 'errorData, 'responseData>,
+  ) => t<'json, 'searchParams, 'errorData, 'responseData, 'data> = "extend"
 }

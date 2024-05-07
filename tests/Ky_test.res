@@ -25,6 +25,7 @@ let server = Bun.serve({
     let url = URL.make(request->Globals.Request.url)
     switch url->Globals.URL.pathname {
     | "/" => jsonResponse({"test": 1})
+    | "/test" => jsonResponse({"test": 2})
     | "/afterResponse" => {
         afterResponseMock()
         jsonResponse({"test": 1})
@@ -132,11 +133,18 @@ describe("Configuration", () => {
 describe("Instance", () => {
   let instance = Ky.Instance.create({prefixUrl: mockBasePath})
 
-  testAsync("Simple fetch", async () => {
+  testAsync("fetch", async () => {
+    let response = await instance("test", {}).json()
+
+    expect(response["test"])->Expect.toBe(2)
+  })
+
+  testAsync("GET", async () => {
     let response = await (instance->Ky.Instance.get("")).json()
 
     expect(response["test"])->Expect.toBe(1)
   })
+
   testAsync("Extend", async () => {
     let extendedInstance = instance->Ky.Instance.extend({
       prefixUrl: `${mockBasePath}/extend`,
