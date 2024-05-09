@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/DCKT/rescript-ky/compare/v1.3.1...v1.4.0) (2024-05-09)
+
+
+### Bug Fixes
+
+* add  %identity function, facilitating the usage in catch case ([e958407](https://github.com/DCKT/rescript-ky/commit/e9584075577af9a382a69c22ef25ff250c8c89e8))
+
+
+### Features
+
+* add instance fetch callable in a weird way ([4c09788](https://github.com/DCKT/rescript-ky/commit/4c09788e8df5cc858a24ea114447ca18ed0c8cf9))
+
 ## [1.3.1](https://github.com/DCKT/rescript-ky/compare/v1.3.0...v1.3.1) (2024-05-07)
 
 
