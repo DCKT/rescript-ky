@@ -139,11 +139,12 @@ describe("Configuration", () => {
 describe("Instance", () => {
   let instance = Ky.Instance.create({prefixUrl: `${mockBasePath}/instance`})
 
-  // testAsync("fetch", async () => {
-  //   let response = await instance("test", {}).json()
+  testAsync("fetch", async () => {
+    let response =
+      await Ky.Instance.asCallable(instance)("get", ~options={method: GET})->Ky.Instance.json
 
-  //   expect(response["test"])->Expect.toBe(2)
-  // })
+    expect(response["test"])->Expect.toBe(1)
+  })
 
   testAsync("GET", async () => {
     let response = await (instance->Ky.Instance.get("get")).json()

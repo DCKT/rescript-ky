@@ -134,9 +134,13 @@ module Instance = {
   @module("ky") @scope("default")
   external create: requestOptions<'json, 'searchParams, 'errorData, 'responseData> => t = "create"
 
-  // let fetch = (instance: t, ~url: string, ~requestOptions) => {
-  //   instance(url, requestOptions)
-  // }
+  type callable<'json, 'searchParams, 'errorData, 'responseData> = (
+    string,
+    ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
+  ) => t
+  @send external json: t => 'a = "json"
+
+  external asCallable: t => callable<'json, 'searchParams, 'errorData, 'responseData> = "%identity"
 
   @send
   external get: (
