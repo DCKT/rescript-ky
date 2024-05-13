@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/DCKT/rescript-ky/compare/v1.4.0...v2.0.0) (2024-05-13)
+
+
+### Features
+
+* move response to module type t style ([cf71d8b](https://github.com/DCKT/rescript-ky/commit/cf71d8b8509b57e9c792dd5f4bcc5c2ef6b68a5a))
+
+
+### BREAKING CHANGES
+
+* use @send for response parsing
+
 # [1.4.0](https://github.com/DCKT/rescript-ky/compare/v1.3.1...v1.4.0) (2024-05-09)
 
 
