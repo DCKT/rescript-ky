@@ -34,12 +34,12 @@ type errorPayload = {
 
 let fetchSomething = async () => {
   try {
-    let response: data = await Ky.fetch("test", {prefixUrl: "https://fake.com", method: GET}).json()
+    let response: data = await Ky.fetch("test", {prefixUrl: "https://fake.com", method: GET})->Ky.Response.json()
     // handle response data
   } catch {
     | JsError(err) => {
       let errorResponse = (err->Ky.unkownToError).response->Option.getExn
-      let errorData: errorPayload = await errorResponse.json()
+      let errorData: errorPayload = await errorResponse->Ky.Response.json()
 
       switch (errorData.code) {
         | "CODE_1" => () // do something
@@ -57,7 +57,7 @@ type data = {anything: string}
 
 let fetchSomething = async () => {
   try {
-    let response: data = await Ky.get("test", {prefixUrl: "https://fake.com"}).json()
+    let response: data = await Ky.get("test", {prefixUrl: "https://fake.com"})->Ky.Response.json()
     // handle response data
   } catch {
     | JsError(err) => {
@@ -77,7 +77,7 @@ type data = {anything: string}
 
 let fetchSomething = async () => {
   try {
-    let response: data = await (instance->Ky.Instance.get("test")).json()
+    let response: data = await (instance->Ky.Instance.get("test"))->Ky.Response.json()
     // handle response data
   } catch {
     | JsError(err) => {
@@ -103,7 +103,7 @@ type data = {anything: string}
 
 let fetchSomething = async () => {
   try {
-    let response: data = await (extendedInstance->Ky.Instance.get("test")).json()
+    let response: data = await (extendedInstance->Ky.Instance.get("test"))->Ky.Response.json()
     // handle response data
   } catch {
     | JsError(err) => {
