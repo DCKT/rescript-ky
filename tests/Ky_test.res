@@ -69,31 +69,31 @@ type jsonMethod = {method: Ky.HttpMethod.t}
 describe("HTTP methods imports", () => {
   testAsync("GET", async () => {
     let response: jsonMethod =
-      await Ky.get("method", ~options={prefixUrl: mockBasePath})->Ky.Response.json()
+      await Ky.get("method", ~options={prefixUrl: mockBasePath})->Ky.Response.jsonFromPromise()
 
     expect(response.method)->Expect.toBe(GET)
   })
   testAsync("POST", async () => {
     let response: jsonMethod =
-      await Ky.post("method", ~options={prefixUrl: mockBasePath})->Ky.Response.json()
+      await Ky.post("method", ~options={prefixUrl: mockBasePath})->Ky.Response.jsonFromPromise()
 
     expect(response.method)->Expect.toBe(POST)
   })
   testAsync("PUT", async () => {
     let response: jsonMethod =
-      await Ky.put("method", ~options={prefixUrl: mockBasePath})->Ky.Response.json()
+      await Ky.put("method", ~options={prefixUrl: mockBasePath})->Ky.Response.jsonFromPromise()
 
     expect(response.method)->Expect.toBe(PUT)
   })
   testAsync("PATCH", async () => {
     let response: jsonMethod =
-      await Ky.patch("method", ~options={prefixUrl: mockBasePath})->Ky.Response.json()
+      await Ky.patch("method", ~options={prefixUrl: mockBasePath})->Ky.Response.jsonFromPromise()
 
     expect(response.method)->Expect.toBe(PATCH)
   })
   testAsync("DELETE", async () => {
     let response: jsonMethod =
-      await Ky.delete("method", ~options={prefixUrl: mockBasePath})->Ky.Response.json()
+      await Ky.delete("method", ~options={prefixUrl: mockBasePath})->Ky.Response.jsonFromPromise()
 
     expect(response.method)->Expect.toBe(DELETE)
   })
@@ -104,7 +104,8 @@ external jsonData_encode: jsonData => Js.Json.t = "%identity"
 
 describe("Configuration", () => {
   testAsync("Simple fetch", async () => {
-    let response = await Ky.fetch("", {prefixUrl: mockBasePath, method: GET})->Ky.Response.json()
+    let response =
+      await Ky.fetch("", {prefixUrl: mockBasePath, method: GET})->Ky.Response.jsonFromPromise()
 
     expect(response["test"])->Expect.toBe(1)
   })
@@ -115,11 +116,9 @@ describe("Configuration", () => {
       randomStr: "test",
     }
 
-    let response: jsonData =
-      await Ky.post(
-        "json",
-        ~options={prefixUrl: mockBasePath, json: data->jsonData_encode},
-      )->Ky.Response.json()
+    let request = Ky.post("json", ~options={prefixUrl: mockBasePath, json: data->jsonData_encode})
+
+    let response: jsonData = await request->Ky.Response.jsonFromPromise()
 
     expect(response.test)->Expect.toBe(1)
   })
@@ -129,7 +128,7 @@ describe("Configuration", () => {
       await Ky.fetch(
         `retry`,
         {prefixUrl: mockBasePath, method: GET, retry: Int(1)},
-      )->Ky.Response.json()
+      )->Ky.Response.jsonFromPromise()
 
     expect(response["retryCount"])->Expect.toBe(1)
   })
@@ -139,7 +138,7 @@ describe("Configuration", () => {
       await Ky.fetch(
         `timeout`,
         {prefixUrl: mockBasePath, method: GET, timeout: 100},
-      )->Ky.Response.json()
+      )->Ky.Response.jsonFromPromise()
     } catch {
     | JsError(err) => {
         let err: Ky.error = err->Obj.magic
@@ -154,29 +153,32 @@ describe("Instance", () => {
 
   testAsync("fetch", async () => {
     let response =
-      await (instance->Ky.Instance.asCallable)("get", ~options={method: GET})->Ky.Response.json()
+      await (instance->Ky.Instance.asCallable)(
+        "get",
+        ~options={method: GET},
+      )->Ky.Response.jsonFromPromise()
 
     expect(response["test"])->Expect.toBe(1)
   })
 
   testAsync("GET", async () => {
-    let response = await instance->Ky.Instance.get("get")->Ky.Response.json()
+    let response = await instance->Ky.Instance.get("get")->Ky.Response.jsonFromPromise()
 
     expect(response["test"])->Expect.toBe(1)
   })
 
   testAsync("POST", async () => {
-    let response = await instance->Ky.Instance.post("post")->Ky.Response.json()
+    let response = await instance->Ky.Instance.post("post")->Ky.Response.jsonFromPromise()
 
     expect(response["test"])->Expect.toBe(1)
   })
   testAsync("PUT", async () => {
-    let response = await instance->Ky.Instance.put("put")->Ky.Response.json()
+    let response = await instance->Ky.Instance.put("put")->Ky.Response.jsonFromPromise()
 
     expect(response["test"])->Expect.toBe(1)
   })
   testAsync("DELETE", async () => {
-    let response = await instance->Ky.Instance.delete("delete", {})->Ky.Response.json()
+    let response = await instance->Ky.Instance.delete("delete", {})->Ky.Response.jsonFromPromise()
 
     expect(response["test"])->Expect.toBe(1)
   })
@@ -189,7 +191,7 @@ describe("Instance", () => {
       }),
     })
 
-    let response = await extendedInstance->Ky.Instance.get("test")->Ky.Response.json()
+    let response = await extendedInstance->Ky.Instance.get("test")->Ky.Response.jsonFromPromise()
 
     expect(response["test"])->Expect.toBe(1)
   })
@@ -201,14 +203,19 @@ describe("Hooks", () => {
     hooks: {
       afterResponse: [
         (_request, _responseOptions, _response) => {
-          Ky.Async(Ky.get("afterResponse", ~options={prefixUrl: mockBasePath})->Ky.Response.json())
+          Ky.Async(
+            Ky.get(
+              "afterResponse",
+              ~options={prefixUrl: mockBasePath},
+            )->Ky.Response.jsonFromPromise(),
+          )
         },
       ],
     },
   })
 
   testAsync("Async", async () => {
-    let response = await instance->Ky.Instance.get("")->Ky.Response.json()
+    let response = await instance->Ky.Instance.get("")->Ky.Response.jsonFromPromise()
 
     expect(response["test"])->Expect.toBe(1)
     expect((afterResponseMock->Obj.magic: string))->Expect.toHaveBeenCalled
@@ -219,7 +226,11 @@ type errorPayload = {code: string}
 describe("Error handling", () => {
   testAsync("Get code error from the payload", async () => {
     try {
-      let _ = await Ky.get("error-code", ~options={prefixUrl: mockBasePath})->Ky.Response.json()
+      let _ =
+        await Ky.get(
+          "error-code",
+          ~options={prefixUrl: mockBasePath},
+        )->Ky.Response.jsonFromPromise()
     } catch {
     | JsError(err) => {
         let errorResponse = (err->Ky.unkownToError).response->Option.getExn

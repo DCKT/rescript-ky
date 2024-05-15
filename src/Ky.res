@@ -10,8 +10,15 @@ module Response = {
 
   @send
   external json: (t, unit) => promise<'data> = "json"
+  @send
+  external jsonFromPromise: (promise<t>, unit) => promise<'data> = "json"
+
+  @send
   external text: (t, unit) => promise<'data> = "text"
+  @send
+  external textFromPromise: (promise<t>, unit) => promise<'data> = "text"
 }
+
 type request
 type error = {response: option<Response.t>, request: option<Request.t>, name: string}
 
@@ -101,20 +108,21 @@ type requestOptions<'searchParams> = {
 }
 
 @module("ky")
-external fetch: (string, requestOptions<'searchParams>) => Response.t = "default"
+external fetch: (string, requestOptions<'searchParams>) => promise<Response.t> = "default"
 
 @module("ky") @scope("default")
-external get: (string, ~options: requestOptions<'searchParams>=?) => Response.t = "get"
+external get: (string, ~options: requestOptions<'searchParams>=?) => promise<Response.t> = "get"
 @module("ky") @scope("default")
-external post: (string, ~options: requestOptions<'searchParams>=?) => Response.t = "post"
+external post: (string, ~options: requestOptions<'searchParams>=?) => promise<Response.t> = "post"
 @module("ky") @scope("default")
-external put: (string, ~options: requestOptions<'searchParams>=?) => Response.t = "put"
+external put: (string, ~options: requestOptions<'searchParams>=?) => promise<Response.t> = "put"
 @module("ky") @scope("default")
-external patch: (string, ~options: requestOptions<'searchParams>=?) => Response.t = "patch"
+external patch: (string, ~options: requestOptions<'searchParams>=?) => promise<Response.t> = "patch"
 @module("ky") @scope("default")
-external head: (string, ~options: requestOptions<'searchParams>=?) => Response.t = "head"
+external head: (string, ~options: requestOptions<'searchParams>=?) => promise<Response.t> = "head"
 @module("ky") @scope("default")
-external delete: (string, ~options: requestOptions<'searchParams>=?) => Response.t = "delete"
+external delete: (string, ~options: requestOptions<'searchParams>=?) => promise<Response.t> =
+  "delete"
 
 module Instance = {
   type t
@@ -122,22 +130,30 @@ module Instance = {
   @module("ky") @scope("default")
   external create: requestOptions<'searchParams> => t = "create"
 
-  type callable<'searchParams> = (string, ~options: requestOptions<'searchParams>=?) => Response.t
+  type callable<'searchParams> = (
+    string,
+    ~options: requestOptions<'searchParams>=?,
+  ) => promise<Response.t>
 
   external asCallable: t => callable<'searchParams> = "%identity"
 
   @send
-  external get: (t, string, ~options: requestOptions<'searchParams>=?) => Response.t = "get"
+  external get: (t, string, ~options: requestOptions<'searchParams>=?) => promise<Response.t> =
+    "get"
   @send
-  external post: (t, string, ~options: requestOptions<'searchParams>=?) => Response.t = "post"
+  external post: (t, string, ~options: requestOptions<'searchParams>=?) => promise<Response.t> =
+    "post"
   @send
-  external put: (t, string, ~options: requestOptions<'searchParams>=?) => Response.t = "put"
+  external put: (t, string, ~options: requestOptions<'searchParams>=?) => promise<Response.t> =
+    "put"
   @send
-  external patch: (t, string, ~options: requestOptions<'searchParams>=?) => Response.t = "patch"
+  external patch: (t, string, ~options: requestOptions<'searchParams>=?) => promise<Response.t> =
+    "patch"
   @send
-  external head: (t, string, ~options: requestOptions<'searchParams>=?) => Response.t = "head"
+  external head: (t, string, ~options: requestOptions<'searchParams>=?) => promise<Response.t> =
+    "head"
   @send
-  external delete: (t, string, requestOptions<'searchParams>) => Response.t = "delete"
+  external delete: (t, string, requestOptions<'searchParams>) => promise<Response.t> = "delete"
 
   @send
   external extend: (t, requestOptions<'searchParams>) => t = "extend"
