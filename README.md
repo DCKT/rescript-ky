@@ -57,7 +57,7 @@ type data = {anything: string}
 
 let fetchSomething = async () => {
   try {
-    let response: data = await Ky.get("test", {prefixUrl: "https://fake.com"})->Ky.Response.json()
+    let response: data = await Ky.get("test", {prefixUrl: "https://fake.com"})->Ky.Response.jsonFromPromise()
     // handle response data
   } catch {
     | JsError(err) => {
@@ -77,7 +77,7 @@ type data = {anything: string}
 
 let fetchSomething = async () => {
   try {
-    let response: data = await (instance->Ky.Instance.get("test"))->Ky.Response.json()
+    let response: data = await (instance->Ky.Instance.get("test"))->Ky.Response.jsonFromPromise()
     // handle response data
   } catch {
     | JsError(err) => {
@@ -103,7 +103,7 @@ type data = {anything: string}
 
 let fetchSomething = async () => {
   try {
-    let response: data = await (extendedInstance->Ky.Instance.get("test"))->Ky.Response.json()
+    let response: data = await (extendedInstance->Ky.Instance.get("test"))->Ky.Response.jsonFromPromise()
     // handle response data
   } catch {
     | JsError(err) => {
