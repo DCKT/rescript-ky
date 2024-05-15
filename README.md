@@ -34,7 +34,7 @@ type errorPayload = {
 
 let fetchSomething = async () => {
   try {
-    let response: data = await Ky.fetch("test", {prefixUrl: "https://fake.com", method: GET})->Ky.Response.json()
+    let response: data = await Ky.fetch("test", {prefixUrl: "https://fake.com", method: GET})->Ky.Response.jsonFromPromise()
     // handle response data
   } catch {
     | JsError(err) => {
