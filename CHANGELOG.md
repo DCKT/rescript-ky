@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/DCKT/rescript-ky/compare/v2.0.1...v2.0.2) (2024-05-15)
+
+
+### Bug Fixes
+
+* fix typing ([9c3e7d4](https://github.com/DCKT/rescript-ky/commit/9c3e7d481175c36fba76d00daeecaca13dc8b351))
+
 ## [2.0.1](https://github.com/DCKT/rescript-ky/compare/v2.0.0...v2.0.1) (2024-05-15)
 
 
