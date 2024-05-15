@@ -100,6 +100,8 @@ describe("HTTP methods imports", () => {
 })
 
 type jsonData = {test: int, randomStr: string}
+external jsonData_encode: jsonData => Js.Json.t = "%identity"
+
 describe("Configuration", () => {
   testAsync("Simple fetch", async () => {
     let response = await Ky.fetch("", {prefixUrl: mockBasePath, method: GET})->Ky.Response.json()
@@ -112,8 +114,12 @@ describe("Configuration", () => {
       test: 1,
       randomStr: "test",
     }
+
     let response: jsonData =
-      await Ky.post("json", ~options={prefixUrl: mockBasePath, json: data})->Ky.Response.json()
+      await Ky.post(
+        "json",
+        ~options={prefixUrl: mockBasePath, json: data->jsonData_encode},
+      )->Ky.Response.json()
 
     expect(response.test)->Expect.toBe(1)
   })
@@ -136,7 +142,7 @@ describe("Configuration", () => {
       )->Ky.Response.json()
     } catch {
     | JsError(err) => {
-        let err: Ky.error<unit> = err->Obj.magic
+        let err: Ky.error = err->Obj.magic
         expect(err.name)->Expect.toBe("TimeoutError")
       }
     }

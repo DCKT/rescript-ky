@@ -13,7 +13,7 @@ module Response = {
   external text: (t, unit) => promise<'data> = "text"
 }
 type request
-type error<'data> = {response: option<Response.t>, request: option<Request.t>, name: string}
+type error = {response: option<Response.t>, request: option<Request.t>, name: string}
 
 module HttpMethod = {
   type t =
@@ -50,25 +50,21 @@ type retryCallbackParams = {
 
 type beforeRequestCallback = request => unit
 type beforeRetryCallback = retryCallbackParams => unit
-type beforeErrorCallback<'data> = error<'data> => error<'data>
+type beforeErrorCallback = error => error
 type responseOptions
 
 @unboxed
-type afterResponseCallbackResponse<'data> =
+type afterResponseCallbackResponse =
   | Sync(Response.t)
   | Async(promise<Response.t>)
 
-type afterResponseCallback<'responseData> = (
-  request,
-  responseOptions,
-  Response.t,
-) => afterResponseCallbackResponse<'responseData>
+type afterResponseCallback = (request, responseOptions, Response.t) => afterResponseCallbackResponse
 
-type hooks<'errorData, 'responseData> = {
+type hooks = {
   beforeRequest?: array<beforeRequestCallback>,
   beforeRetry?: array<beforeRetryCallback>,
-  beforeError?: array<beforeErrorCallback<'errorData>>,
-  afterResponse?: array<afterResponseCallback<'responseData>>,
+  beforeError?: array<beforeErrorCallback>,
+  afterResponse?: array<afterResponseCallback>,
 }
 
 @unboxed
@@ -90,110 +86,61 @@ module Headers = {
   external fromDict: Js.Dict.t<string> => t = "%identity"
 }
 
-type requestOptions<'json, 'searchParams, 'errorData, 'responseData> = {
+type requestOptions<'searchParams> = {
   prefixUrl?: string,
   method?: HttpMethod.t,
-  json?: 'json,
+  json?: Js.Json.t,
   searchParams?: 'searchParams,
   retry?: retry,
   timeout?: int,
   throwHttpErrors?: bool,
-  hooks?: hooks<'errorData, 'responseData>,
+  hooks?: hooks,
   onDownloadProgress?: onDownloadProgress,
   parseJson?: string => Js.Json.t,
   headers?: Headers.t,
 }
 
 @module("ky")
-external fetch: (
-  string,
-  requestOptions<'json, 'searchParams, 'errorData, 'responseData>,
-) => Response.t = "default"
+external fetch: (string, requestOptions<'searchParams>) => Response.t = "default"
 
 @module("ky") @scope("default")
-external get: (
-  string,
-  ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
-) => Response.t = "get"
+external get: (string, ~options: requestOptions<'searchParams>=?) => Response.t = "get"
 @module("ky") @scope("default")
-external post: (
-  string,
-  ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
-) => Response.t = "post"
+external post: (string, ~options: requestOptions<'searchParams>=?) => Response.t = "post"
 @module("ky") @scope("default")
-external put: (
-  string,
-  ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
-) => Response.t = "put"
+external put: (string, ~options: requestOptions<'searchParams>=?) => Response.t = "put"
 @module("ky") @scope("default")
-external patch: (
-  string,
-  ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
-) => Response.t = "patch"
+external patch: (string, ~options: requestOptions<'searchParams>=?) => Response.t = "patch"
 @module("ky") @scope("default")
-external head: (
-  string,
-  ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
-) => Response.t = "head"
+external head: (string, ~options: requestOptions<'searchParams>=?) => Response.t = "head"
 @module("ky") @scope("default")
-external delete: (
-  string,
-  ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
-) => Response.t = "delete"
+external delete: (string, ~options: requestOptions<'searchParams>=?) => Response.t = "delete"
 
 module Instance = {
   type t
 
   @module("ky") @scope("default")
-  external create: requestOptions<'json, 'searchParams, 'errorData, 'responseData> => t = "create"
+  external create: requestOptions<'searchParams> => t = "create"
 
-  type callable<'json, 'searchParams, 'errorData, 'responseData> = (
-    string,
-    ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
-  ) => Response.t
+  type callable<'searchParams> = (string, ~options: requestOptions<'searchParams>=?) => Response.t
 
-  external asCallable: t => callable<'json, 'searchParams, 'errorData, 'responseData> = "%identity"
+  external asCallable: t => callable<'searchParams> = "%identity"
 
   @send
-  external get: (
-    t,
-    string,
-    ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
-  ) => Response.t = "get"
+  external get: (t, string, ~options: requestOptions<'searchParams>=?) => Response.t = "get"
   @send
-  external post: (
-    t,
-    string,
-    ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
-  ) => Response.t = "post"
+  external post: (t, string, ~options: requestOptions<'searchParams>=?) => Response.t = "post"
   @send
-  external put: (
-    t,
-    string,
-    ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
-  ) => Response.t = "put"
+  external put: (t, string, ~options: requestOptions<'searchParams>=?) => Response.t = "put"
   @send
-  external patch: (
-    t,
-    string,
-    ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
-  ) => Response.t = "patch"
+  external patch: (t, string, ~options: requestOptions<'searchParams>=?) => Response.t = "patch"
   @send
-  external head: (
-    t,
-    string,
-    ~options: requestOptions<'json, 'searchParams, 'errorData, 'responseData>=?,
-  ) => Response.t = "head"
+  external head: (t, string, ~options: requestOptions<'searchParams>=?) => Response.t = "head"
   @send
-  external delete: (
-    t,
-    string,
-    requestOptions<'json, 'searchParams, 'errorData, 'responseData>,
-  ) => Response.t = "delete"
+  external delete: (t, string, requestOptions<'searchParams>) => Response.t = "delete"
 
   @send
-  external extend: (t, requestOptions<'json, 'searchParams, 'errorData, 'responseData>) => t =
-    "extend"
+  external extend: (t, requestOptions<'searchParams>) => t = "extend"
 }
 
-external unkownToError: unknown => error<'data> = "%identity"
+external unkownToError: unknown => error = "%identity"
