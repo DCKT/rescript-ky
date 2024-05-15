@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/DCKT/rescript-ky/compare/v2.0.0...v2.0.1) (2024-05-15)
+
+
+### Bug Fixes
+
+* remove unnecessary abstracts in typing ([8006fbd](https://github.com/DCKT/rescript-ky/commit/8006fbd5a42baef1e452e5dc5ecc92ce45a8584f))
+
 # [2.0.0](https://github.com/DCKT/rescript-ky/compare/v1.4.0...v2.0.0) (2024-05-13)
 
 
