@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/DCKT/rescript-ky/compare/v2.0.2...v2.0.3) (2024-05-21)
+
+
+### Bug Fixes
+
+* add  &  to request options ([88e6804](https://github.com/DCKT/rescript-ky/commit/88e6804e7d197e7ff6bf96f4bec4f3a94eced305))
+
 ## [2.0.2](https://github.com/DCKT/rescript-ky/compare/v2.0.1...v2.0.2) (2024-05-15)
 
 
