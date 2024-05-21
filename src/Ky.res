@@ -105,6 +105,8 @@ type requestOptions<'searchParams> = {
   onDownloadProgress?: onDownloadProgress,
   parseJson?: string => Js.Json.t,
   headers?: Headers.t,
+  credentials?: string,
+  mode?: string,
 }
 
 @module("ky")
