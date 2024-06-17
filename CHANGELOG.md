@@ -1,3 +1,10 @@
+## [2.0.4](https://github.com/DCKT/rescript-ky/compare/v2.0.3...v2.0.4) (2024-06-17)
+
+
+### Bug Fixes
+
+* handle formdata and urlencoded bodytypes ([445c7bd](https://github.com/DCKT/rescript-ky/commit/445c7bd656cf224e5c80af9ac6a68b3261ace24f))
+
 ## [2.0.3](https://github.com/DCKT/rescript-ky/compare/v2.0.2...v2.0.3) (2024-05-21)
 
 
