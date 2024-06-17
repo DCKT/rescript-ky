@@ -93,10 +93,17 @@ module Headers = {
   external fromDict: Js.Dict.t<string> => t = "%identity"
 }
 
+module Body = {
+  type t
+  external makeFromFormData: FormData.t => t = "%identity"
+  external makeFromUrlSearchParams: URLSearchParams.t => t = "%identity"
+}
+
 type requestOptions<'searchParams> = {
   prefixUrl?: string,
   method?: HttpMethod.t,
   json?: Js.Json.t,
+  body?: Body.t,
   searchParams?: 'searchParams,
   retry?: retry,
   timeout?: int,

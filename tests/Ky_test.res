@@ -1,6 +1,8 @@
 open RescriptCore
+module FormData2 = FormData
 open RescriptBun
 open RescriptBun.Globals
+
 open Test
 
 let wait = ms => {
@@ -43,6 +45,10 @@ let server = Bun.serve({
       }
     | "/json" => {
         let data = await request->Globals.Request.json
+        jsonResponse(data)
+      }
+    | "/formData" => {
+        let data = await request->Globals.Request.formData
         jsonResponse(data)
       }
     | "/error-code" => jsonResponse({"code": "ERROR_CODE"}, ~options={status: 400})
@@ -121,6 +127,22 @@ describe("Configuration", () => {
     let response: jsonData = await request->Ky.Response.jsonFromPromise()
 
     expect(response.test)->Expect.toBe(1)
+  })
+
+  testAsync("FormData", async () => {
+    let data = FormData2.make()
+
+    data->FormData2.append("test", String("1"))
+    data->FormData2.append("randomStr", String("test"))
+
+    let request = Ky.post(
+      "formData",
+      ~options={prefixUrl: mockBasePath, body: Ky.Body.makeFromFormData(data)},
+    )
+
+    let response = await request->Ky.Response.jsonFromPromise()
+
+    expect(response.randomStr)->Expect.toBe("test")
   })
 
   testAsync("Custom retry", async () => {
