@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/DCKT/rescript-ky/compare/v2.0.4...v2.1.0) (2024-08-12)
+
+
+### Features
+
+* enforce URLSearchParams type for search params ([0c488ab](https://github.com/DCKT/rescript-ky/commit/0c488ab98819d02f256cdac3a3124cdbf5441a8e))
+
 ## [2.0.4](https://github.com/DCKT/rescript-ky/compare/v2.0.3...v2.0.4) (2024-06-17)
 
 
