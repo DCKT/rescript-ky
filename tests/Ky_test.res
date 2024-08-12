@@ -25,6 +25,7 @@ external jsonResponse: (
 let server = Bun.serve({
   fetch: async (request, _server) => {
     let url = URL.make(request->Globals.Request.url)
+
     switch url->Globals.URL.pathname {
     | "/" => jsonResponse({"test": 1})
     | "/instance/get"
@@ -32,6 +33,7 @@ let server = Bun.serve({
     | "/instance/put"
     | "/instance/delete" =>
       jsonResponse({"test": 1})
+    | "/test" if url->Globals.URL.search === "?params=1" => jsonResponse({"test": 3})
     | "/test" => jsonResponse({"test": 2})
     | "/afterResponse" => {
         afterResponseMock()
@@ -114,6 +116,15 @@ describe("Configuration", () => {
       await Ky.fetch("", {prefixUrl: mockBasePath, method: GET})->Ky.Response.jsonFromPromise()
 
     expect(response["test"])->Expect.toBe(1)
+  })
+  testAsync("Simple fetch", async () => {
+    let response =
+      await Ky.fetch(
+        "test",
+        {prefixUrl: mockBasePath, searchParams: String("params=1"), method: GET},
+      )->Ky.Response.jsonFromPromise()
+
+    expect(response["test"])->Expect.toBe(3)
   })
 
   testAsync("Json", async () => {
