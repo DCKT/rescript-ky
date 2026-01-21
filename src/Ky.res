@@ -107,7 +107,7 @@ type requestOptions = {
   searchParams?: URLSearchParams.init,
   retry?: retry,
   timeout?: int,
-  throwHttpErrors?: bool,
+  throwHttpErrors?: int => bool,
   hooks?: hooks,
   onDownloadProgress?: onDownloadProgress,
   parseJson?: string => Js.Json.t,
