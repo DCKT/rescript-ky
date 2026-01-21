@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/DCKT/rescript-ky/compare/v2.1.0...v2.1.1) (2026-01-21)
+
+
+### Bug Fixes
+
+* throwHttpErrors function typing ([e409af7](https://github.com/DCKT/rescript-ky/commit/e409af7b8986f475bb87d181bc07712d8523ed5e))
+
 # [2.1.0](https://github.com/DCKT/rescript-ky/compare/v2.0.4...v2.1.0) (2024-08-12)
 
 
